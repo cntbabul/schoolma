@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-calendar": "^6.0.0",
-    "recharts": "^3.5.1"
-  }
-}
