@@ -1,9 +1,9 @@
 "use client"
 import Image from 'next/image';
-import { title } from 'process';
+
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+// css imported in layout
 type ValuePiece = Date | null;
 type Value = ValuePiece | ValuePiece[];
 
