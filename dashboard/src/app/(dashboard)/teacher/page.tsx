@@ -2,15 +2,19 @@ import React from 'react'
 import Announcements from '@/components/Announcements'
 import EventCalendar from '@/components/EventCalendar'
 import BigCalendar from '@/components/BigCalendar'
+import { auth } from '@clerk/nextjs/server'
+import BigCalendarContainer from '@/components/BigCalendarContainer'
 
-const teacherPage = () => {
+const teacherPage = async () => {
+    const { userId } = await auth();
+    // console.log(userId);
     return (
         <div className='p-4 flex gap-4 flex-col xl:flex-row'>
             {/* left  */}
             <div className='w-full xl:w-2/3 h-[80vh]'>
                 <div className='h-full bg-white p-4 rounded-md'>
                     <h1 className='text-xl font-semibold'>Schedule </h1>
-                    <BigCalendar />
+                    <BigCalendarContainer type="teacherId" id={userId!} />
                 </div>
             </div>
             {/* right  */}

@@ -1,28 +1,28 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "../globals.css";
-import Link from "next/link";
-import Image from "next/image";
 import Menu from "@/components/Menu";
 import Navbar from "@/components/Navbar";
+import Image from "next/image";
+import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+// export const metadata: Metadata = {
+//     title: "Lama Dev School Management Dashboard",
+//     description: "Next.js School Management System",
+// };
 
-export const metadata: Metadata = {
-    title: "Lama Dev School Management Dashboard",
-    description: "Next.js School Management System",
-};
-
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    // const { sessionClaims } = await auth();
+    // const role = (sessionClaims?.metadata as { role?: string })?.role;
+
     return (
         <div className="h-screen flex">
             {/*left navbar  */}
             <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14]">
-                <Link href="/" className="flex items-center lg:justify-start gap-2">
+                <Link
+                    href="/"
+                    className="flex items-center lg:justify-start gap-2">
                     <Image src="/logo.png" alt="Logo" width={32} height={32} />
                     <span className="hidden lg:block font-bold">Schoolms</span>
                 </Link>

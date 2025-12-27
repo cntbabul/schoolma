@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import InputField from "../InputField";
+import { Dispatch, SetStateAction } from "react";
 
 const schema = z.object({
     subjectId: z.string().min(1, { message: "Subject is required!" }),
@@ -18,9 +19,13 @@ type ExamFormProps = z.infer<typeof schema>;
 const ExamForm = ({
     type,
     data,
+    setOpen,
+    relatedData,
 }: {
     type: "create" | "update";
     data?: any;
+    setOpen: Dispatch<SetStateAction<boolean>>;
+    relatedData?: any;
 }) => {
     const {
         register,
@@ -31,7 +36,7 @@ const ExamForm = ({
     });
 
     const onSubmit = handleSubmit((data) => {
-        console.log(data);
+        // console.log(data);
     });
 
     return (

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import InputField from "../InputField";
+import { Dispatch, SetStateAction } from "react";
 
 const schema = z.object({
     studentId: z.string().min(1, { message: "Student ID is required!" }),
@@ -17,9 +18,13 @@ type AttendanceFormProps = z.infer<typeof schema>;
 const AttendanceForm = ({
     type,
     data,
+    setOpen,
+    relatedData,
 }: {
     type: "create" | "update";
     data?: any;
+    setOpen?: Dispatch<SetStateAction<boolean>>;
+    relatedData?: any;
 }) => {
     const {
         register,

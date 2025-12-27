@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import InputField from "../InputField";
+import { Dispatch, SetStateAction } from "react";
 
 const schema = z.object({
     title: z.string().min(3, { message: "Title must be at least 3 characters" }).max(50, { message: "Title must be at most 50 characters" }),
@@ -17,9 +18,13 @@ type AnnouncementFormProps = z.infer<typeof schema>;
 const AnnouncementForm = ({
     type,
     data,
+    setOpen,
+    relatedData,
 }: {
     type: "create" | "update";
     data?: any;
+    setOpen?: Dispatch<SetStateAction<boolean>>;
+    relatedData?: any;
 }) => {
     const {
         register,
@@ -30,7 +35,7 @@ const AnnouncementForm = ({
     });
 
     const onSubmit = handleSubmit((data) => {
-        console.log(data);
+        //console.log(data);
     });
 
     return (

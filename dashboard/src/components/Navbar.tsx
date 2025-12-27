@@ -1,7 +1,16 @@
-import React from 'react'
+import { UserButton } from "@clerk/nextjs";
 import Image from 'next/image'
+import { getCurrentUser } from "@/lib/utils";
+import { getRole } from "@/lib/utils";
+import { getCurrentUserId } from "@/lib/utils";
 
-const Navbar = () => {
+const Navbar = async () => {
+    const user = await getCurrentUser();
+    const role = await getRole();
+    const currentUserId = await getCurrentUserId();
+
+    // console.log('Navbar user:', JSON.stringify(user, null, 2));
+
     return (
         <div className='flex items-center justify-between p-4'>
             {/* search bar  */}
@@ -19,11 +28,12 @@ const Navbar = () => {
                     <div className='absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-purple-500 text-white rounded-full text-xs'>2</div>
                 </div>
                 <div className='flex flex-col'>
-                    <span className='text-xs leading-3 font-medium'>Babul Miah</span>
-                    <span className='text-[10px] text-gray-500 text-right'>Admin</span>
+                    <span className='text-xs leading-3 font-medium'>{user?.username || "Guest"} </span>
+                    <span className='text-[10px] text-gray-500 text-right'> {user?.publicMetadata?.role as string}</span>
 
                 </div>
-                <Image src="/avatar.png" alt="" width={36} height={36} className='rounded-full' />
+                {/* <Image src="/avatar.png" alt="" width={36} height={36} className='rounded-full' /> */}
+                <UserButton />
             </div>
 
         </div>
