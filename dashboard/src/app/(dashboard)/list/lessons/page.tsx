@@ -44,7 +44,9 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
                 </div>
             </td>
         </tr>
-    ); const { page, ...queryParams } = searchParams;
+    );
+
+    const { page, ...queryParams } = searchParams;
 
     const p = page ? parseInt(page) : 1;
 

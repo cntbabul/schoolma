@@ -47,9 +47,16 @@ const TeacherForm = ({
 
         // Upload image to Cloudinary if a new image is selected
         if (img) {
+            // Check if Cloudinary is configured
+            if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME) {
+                console.error("Cloudinary cloud name is not configured");
+                toast.error("Image upload is not configured. Please contact administrator.");
+                return;
+            }
+
             const formDataImg = new FormData();
             formDataImg.append("file", img);
-            formDataImg.append("upload_preset", "school");
+            formDataImg.append("upload_preset", "schoolms");
 
             try {
                 const response = await fetch(
@@ -59,11 +66,35 @@ const TeacherForm = ({
                         body: formDataImg,
                     }
                 );
-                const data = await response.json();
-                imgUrl = data.secure_url;
+
+                // Check if the response is successful
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("Cloudinary upload failed:", errorData);
+
+                    // Provide specific error messages
+                    if (errorData.error?.message) {
+                        toast.error(`Image upload failed: ${errorData.error.message}`);
+                    } else {
+                        toast.error("Failed to upload image. Please check Cloudinary configuration.");
+                    }
+                    return;
+                }
+
+                const responseData = await response.json();
+
+                // Verify we got a secure URL
+                if (!responseData.secure_url) {
+                    console.error("No secure URL in Cloudinary response:", responseData);
+                    toast.error("Image upload failed: No URL returned");
+                    return;
+                }
+
+                imgUrl = responseData.secure_url;
+                console.log("Image uploaded successfully:", imgUrl);
             } catch (error) {
-                console.error("Image upload failed:", error);
-                toast.error("Failed to upload image!");
+                console.error("Image upload failed with exception:", error);
+                toast.error("Failed to upload image. Please try again.");
                 return;
             }
         }
@@ -80,7 +111,7 @@ const TeacherForm = ({
             router.refresh();
         }
         if (state.error) {
-            toast.error("Something went wrong!");
+            toast.error((state as any).message || "Something went wrong!");
         }
     }, [state, router, type, setOpen]);
 
@@ -233,7 +264,7 @@ const TeacherForm = ({
                             size={5}
                             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-blue-400 outline-none"
                             {...register("subjects")}
-                            defaultValue={data?.subjects}
+                            defaultValue={data?.subjects?.map((s: any) => s.id) || []}
                         >
                             {subjects.map(
                                 (subject: { id: number; name: string }) => (
@@ -257,7 +288,12 @@ const TeacherForm = ({
                 </div>
 
                 {state.error && (
-                    <span className="text-red-500">Something went wrong!</span>
+                    <div className="text-red-500">
+                        <p className="font-semibold">Something went wrong!</p>
+                        {(state as any).message && (
+                            <p className="text-sm mt-1">{(state as any).message}</p>
+                        )}
+                    </div>
                 )}
                 <button type="submit" className="bg-blue-400 text-white p-2 rounded-md">
                     {type === "create" ? "Create" : "Update"}

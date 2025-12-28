@@ -29,6 +29,9 @@ const SingleTeacherPage = async ({ params }: { params: { id: string } }) => {
         notFound();
     }
 
+    // Fetch all subjects for the update form
+    const subjects = await prisma.subject.findMany();
+
     // Format birthday
     const formattedBirthday = new Intl.DateTimeFormat('en-US').format(teacher.birthday);
 
@@ -57,6 +60,7 @@ const SingleTeacherPage = async ({ params }: { params: { id: string } }) => {
                                     table="teacher"
                                     type="update"
                                     data={teacher}
+                                    relatedData={{ subjects }}
                                 />
                             </div>
                             <p className='text-sm text-gray-500'>{teacher.subjects.map(s => s.name).join(", ") || "No subjects assigned"}</p>

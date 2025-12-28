@@ -51,7 +51,7 @@ const ClassForm = ({
             router.refresh();
         }
         if (state.error) {
-            toast.error("Something went wrong!");
+            toast.error((state as any).message || "Something went wrong!");
         }
     }, [state, router, type, setOpen]);
 
@@ -135,7 +135,12 @@ const ClassForm = ({
                 </div>
             </div>
             {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
+                <div className="text-red-500">
+                    <p className="font-semibold">Something went wrong!</p>
+                    {(state as any).message && (
+                        <p className="text-sm mt-1">{(state as any).message}</p>
+                    )}
+                </div>
             )}
             <button type="submit" className="bg-blue-400 text-white p-2 rounded-md">
                 {type === "create" ? "Create" : "Update"}
